@@ -21,6 +21,9 @@ const category = require("./routes/category");
 const subcategory = require("./routes/subcategoryRoutes");
 const tag = require("./routes/tag")
 const company = require("./routes/companyRoutes")
+const compBlog = require("./routes/compBlogRoutes")
+
+
 app.use(cors());
 
 app.use(express.json());
@@ -31,6 +34,7 @@ app.use(category);
 app.use(subcategory);
 app.use(tag)
 app.use(company)
+app.use(compBlog)
 
 
 

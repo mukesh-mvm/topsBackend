@@ -1,5 +1,6 @@
 // controllers/compBlogController.js
 const CompBlog = require("../models/CompBlog");
+const Category = require("../models/category")
 const slugify = require("slugify");
 
 // CREATE
@@ -25,6 +26,54 @@ exports.createCompBlog = async (req, res) => {
   }
 };
 
+
+exports.filterBLog = async(req,res)=>{
+  try {
+    const { slug } = req.params;
+
+
+    const category = await Category.findOne({ slug: slug });
+
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    
+    console.log(category._id)
+
+
+    const blogs = await CompBlog.find({categories:category._id})
+    .populate("subcategories")
+  
+  
+    const result = [];
+
+    blogs.forEach(item => {
+      const subcatId = item.subcategories._id;
+      const existing = result.find(r => r.subcategories._id.toString() === subcatId.toString());
+    
+      if (existing) {
+        existing.items.push(item);
+      } else {
+        const data = {
+          subcategories: item.subcategories,
+          items: [item]
+        };
+        result.push(data);
+      }
+    });
+    
+
+
+  // return result;
+    
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+
+
 // READ ALL
 exports.getAllCompBlogs = async (req, res) => {
   try {
@@ -39,6 +88,8 @@ exports.getAllCompBlogs = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 // READ ONE
 exports.getCompBlogBySlug = async (req, res) => {
@@ -60,8 +111,8 @@ exports.getCompBlogBySlug = async (req, res) => {
 // UPDATE
 exports.updateCompBlog = async (req, res) => {
   try {
-    const updatedBlog = await CompBlog.findOneAndUpdate(
-      { slug: req.params.slug },
+    const updatedBlog = await CompBlog.findByIdAndUpdate(
+      { _id: req.params.slug },
       req.body,
       { new: true }
     )

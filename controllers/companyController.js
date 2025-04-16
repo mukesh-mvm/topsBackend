@@ -37,6 +37,18 @@ exports.getCompanyById = async (req, res) => {
   }
 };
 
+
+
+exports.getCompanyBySubcategoryId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const company = await Company.find({ subcategories: id });
+    res.json(company);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch subcategories", details: error.message });
+  }
+};
+
 // Update a company by ID
 exports.updateCompany = async (req, res) => {
   try {

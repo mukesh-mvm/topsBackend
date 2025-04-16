@@ -41,7 +41,7 @@ const CompBlogSchema = new mongoose.Schema(
 
 
     // Tags associated with the blog (references 'Tag' model)
-    tags: [{ type: ObjectId, ref: "Tag", required: true }],
+    tags: { type: ObjectId, ref: "Tag", required: true },
    
     // User who posted the blog (references 'User' model)
     postedBy: {

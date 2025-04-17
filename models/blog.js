@@ -23,10 +23,9 @@ const blogSchema = new mongoose.Schema(
     },
     // Main blog content with required validation and size constraints
     body: {
-      type: {},
+      type: String,
       required: true,
-      min: 200,
-      max: 2000000,
+      
     },
     // Short excerpt of the blog (optional) with a maximum length
     excerpt: {
@@ -47,10 +46,10 @@ const blogSchema = new mongoose.Schema(
      type:String,
     },
     // Categories associated with the blog (references 'Category' model)
-    categories: [{ type: ObjectId, ref: "Category", required: true }],
-    subcategories: [{ type: ObjectId, ref: "Subcategory", required: true }],
+    categories: { type: ObjectId, ref: "Category", required: true },
+    subcategories: { type: ObjectId, ref: "Subcategory", required: true },
     // Tags associated with the blog (references 'Tag' model)
-    tags: [{ type: ObjectId, ref: "Tag", required: true }],
+    tags: { type: ObjectId, ref: "Tag", required: true },
     // Number of times the blog has been marked as favorite, defaults to 0
     favoritesCount: { type: Number, default: 0 },
     // User who posted the blog (references 'User' model)

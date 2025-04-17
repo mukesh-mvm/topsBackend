@@ -68,11 +68,35 @@ exports.getBlogBySlug = async (req, res) => {
 };
 
 
+
+
+
+
 // Update a blog by slug
 exports.updateBlog = async (req, res) => {
   try {
     const updateBlog = await Blog.findOneAndUpdate(
       { slug: req.params.slug }, // filter
+      req.body,                  // update
+      { new: true, runValidators: true } // options
+    );
+
+    if (!updateBlog) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    res.json(updateBlog); // return updated blog
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+exports.updateBlogById = async (req, res) => {
+  try {
+    const updateBlog = await Blog.findByIdAndUpdate(
+      { _id: req.params.id }, // filter
       req.body,                  // update
       { new: true, runValidators: true } // options
     );

@@ -66,6 +66,28 @@ exports.updateCompany = async (req, res) => {
   }
 };
 
+exports.updateStatus = async (req, res) => {
+  try {
+
+    let company = await Company.findById(req.params.id)
+   
+
+    if (!company) return res.status(404).json({ error: "Blog not found" });
+
+    if(company.status ==='Inactive')  {
+      company.status ='Active'
+    }else{
+      company.status ='Inactive'
+    }
+
+   const companies =  await  company.save()
+
+    res.json(companies);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 // Delete a company by ID
 exports.deleteCompany = async (req, res) => {
   try {

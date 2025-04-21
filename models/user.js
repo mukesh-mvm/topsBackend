@@ -27,11 +27,24 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+
+    role: {
+      type: String,
+      enum: ['user', 'admin', 'superAdmin', 'seoAdmin'],
+      default: 'user',
+    },
+    
     password: {
       type: String,
       required: true,
       select: false, // hides it from queries unless explicitly selected
     },
+
+    status:{
+      type:String,
+      default:"Inactive"
+    }
   },
   { timestamps: true }
 );

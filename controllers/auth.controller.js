@@ -6,7 +6,7 @@ const User = require("../models/user");
 // Register a new user
 const registerUser = async (req, res) => {
   try {
-    const { email, firstName, lastName, username, password, profilePicture } = req.body;
+    const { email, firstName, lastName, username, password, profilePicture,role } = req.body;
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
@@ -22,6 +22,7 @@ const registerUser = async (req, res) => {
       username,
       profilePicture,
       password: hashedPassword,
+      role
     });
 
     await newUser.save();
@@ -60,6 +61,7 @@ const loginUser = async (req, res) => {
         lastName: user.lastName,
         profilePicture: user.profilePicture,
         isAdmin: user.isAdmin,
+        role:user.role
       },
     });
   } catch (error) {
@@ -84,4 +86,56 @@ const getAllUser = async(req,res)=>{
    }
 }
 
-module.exports = { registerUser, loginUser,getAllUser };
+
+
+const getAllAdmin = async (req, res) => {
+  try {
+    const users = await User.find({
+      role: { $in: ['admin', 'superAdmin', 'seoAdmin'] }
+    }).select('+password'); // 👈 Explicitly include password
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No admin users found" });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
+
+
+const updateUserRole = async (req, res) => {
+  const { userId } = req.params;
+  const { role } = req.body;
+
+  // Validate role if it's included in the body
+  const validRoles = ['admin', 'superAdmin', 'seoAdmin', 'user'];
+  if (role && !validRoles.includes(role)) {
+    return res.status(400).json({ message: "Invalid role" });
+  }
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId, // ✅ Use just the ID here
+      req.body, // ✅ Update with the whole body
+      { new: true, runValidators: true } // also validates schema
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Update Error:", error);
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
+
+
+
+module.exports = { registerUser, loginUser,getAllUser,getAllAdmin ,updateUserRole};

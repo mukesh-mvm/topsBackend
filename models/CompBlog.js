@@ -48,6 +48,11 @@ const CompBlogSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "User",
     },
+
+    status:{
+      type:String,
+      default:"Inactive"
+    }
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );

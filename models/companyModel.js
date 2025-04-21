@@ -63,6 +63,11 @@ const CompanySchema = new mongoose.Schema(
     required: true,
   },
 
+  status:{
+    type:String,
+    default:"Inactive"
+  },
+
   subcategories: { type: ObjectId, ref: "Subcategory", },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields

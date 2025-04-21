@@ -129,10 +129,34 @@ exports.updateCompBlog = async (req, res) => {
   }
 };
 
+
+
+exports.updateStatus = async (req, res) => {
+  try {
+
+    let compBlog = await CompBlog.findById(req.params.id)
+   
+
+    if (!compBlog) return res.status(404).json({ error: "Blog not found" });
+
+    if(compBlog.status ==='Inactive')  {
+      compBlog.status ='Active'
+    }else{
+      compBlog.status ='Inactive'
+    }
+
+   const blog =  await  compBlog.save()
+
+    res.json(blog);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 // DELETE
 exports.deleteCompBlog = async (req, res) => {
   try {
-    const deleted = await CompBlog.findOneAndDelete({ slug: req.params.slug });
+    const deleted = await CompBlog.findByIdAndDelete({ _id: req.params.slug });
     if (!deleted) return res.status(404).json({ error: "Blog not found" });
     res.json({ message: "Blog deleted successfully" });
   } catch (err) {

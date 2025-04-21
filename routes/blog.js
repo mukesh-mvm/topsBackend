@@ -7,7 +7,8 @@ const {
   getBlogBySlug,
   updateBlog,
   deleteBlog,
-  updateBlogById
+  updateBlogById,
+  updateStatus
 } = require("../controllers/blog.controller");
 
 // POST ROUTE TO CREATE BLOG    
@@ -23,7 +24,8 @@ router.get("/blogs/category/:categoryId",  getblogbyCategory);
 
 router.put("/blogs/:slug", updateBlog);
 router.put("/updateblogs/:id", updateBlogById);
+router.patch("/updateBlogStatus/:id", updateStatus);
 
-router.delete("/blogs/:slug", deleteBlog);
+router.delete("/deleteblogs/:id", deleteBlog);
 
 module.exports = router;

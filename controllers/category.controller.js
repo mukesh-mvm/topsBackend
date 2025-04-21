@@ -72,13 +72,38 @@ exports.getCategoryById = async (req, res) => {
 // UPDATE a category
 exports.updateCategory = async (req, res) => {
   try {
+
+    const slug = slugify(req.body.name, { lower: true });
     const updatedCategory = await Category.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: {...req.body,slug} },
       { new: true, runValidators: true }
     );
     if (!updatedCategory) return res.status(404).json({ error: "Category not found" });
     res.json(updatedCategory);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+
+exports.updateStatus = async (req, res) => {
+  try {
+
+    let category = await Category.findById(req.params.id)
+   
+
+    if (!category) return res.status(404).json({ error: "Blog not found" });
+
+    if(category.status ==='Inactive')  {
+      category.status ='Active'
+    }else{
+      category.status ='Inactive'
+    }
+
+   const categories =  await  category.save()
+
+    res.json(categories);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

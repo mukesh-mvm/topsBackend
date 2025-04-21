@@ -17,6 +17,11 @@ const subcategorySchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
+
+    status:{
+      type:String,
+      default:"Inactive"
+    }
   },
   { timestamps: true }
 );

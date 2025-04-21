@@ -62,6 +62,29 @@ exports.updateSubcategory = async (req, res) => {
   }
 };
 
+
+exports.updateStatus = async (req, res) => {
+  try {
+
+    let subcategory = await Subcategory.findById(req.params.id)
+   
+
+    if (!subcategory) return res.status(404).json({ error: "Blog not found" });
+
+    if(subcategory.status ==='Inactive')  {
+      subcategory.status ='Active'
+    }else{
+      subcategory.status ='Inactive'
+    }
+
+   const subcategories =  await  subcategory.save()
+
+    res.json(subcategories);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 // DELETE
 exports.deleteSubcategory = async (req, res) => {
   try {

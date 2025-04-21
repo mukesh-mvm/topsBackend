@@ -15,6 +15,11 @@ const categorySchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+
+    status:{
+      type:String,
+      default:"Inactive"
+    }
   },
   { timestamps: true }
 );

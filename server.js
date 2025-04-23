@@ -24,6 +24,30 @@ const company = require("./routes/companyRoutes")
 const compBlog = require("./routes/compBlogRoutes")
 
 
+
+
+const allowedOrigins = new Set([
+  "http://localhost:5173",
+  "https://tops-admin-panel.vercel.app/",
+]);
+
+// CORS middleware setup
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // If origin is undefined (like Postman or curl), allow it
+      
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+        // console.log("Origin:", origin);
+      } else {
+        console.warn("Blocked CORS request from:", origin);
+        callback(new Error("CORS not allowed for this origin"));
+      }
+    },
+    credentials: true, // Allows cookies and session headers
+  })
+);
 app.use(cors());
 
 app.use(express.json());

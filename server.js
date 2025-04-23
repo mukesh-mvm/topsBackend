@@ -29,6 +29,7 @@ const compBlog = require("./routes/compBlogRoutes")
 const allowedOrigins = new Set([
   "http://localhost:5173",
   "https://tops-admin-panel.vercel.app/",
+  "https://tops-admin-panel.vercel.app",
   "http://localhost:3000",
 ]);
 

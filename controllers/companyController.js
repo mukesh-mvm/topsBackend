@@ -56,17 +56,12 @@ exports.getCompanyBySubcategoryId = async (req, res) => {
 exports.updateCompany = async (req, res) => {
   try {
 
-
-    console.log("----slug----",slugify(req.body.websiteName).toLowerCase())
-
     const company = await Company.findByIdAndUpdate(req.params.id, {...req.body,slug: slugify(req.body.websiteName).toLowerCase()}, {
       new: true,
     });
 
     if (!company) return res.status(404).json({ error: "Company not found" });
      
-
-    console.log(company)
     res.json(company);
   } catch (error) {
     res.status(400).json({ error: error.message });

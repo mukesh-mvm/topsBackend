@@ -1,9 +1,12 @@
+const slugify = require("slugify");
 const Company = require("../models/companyModel");
 
 // Create a new company
 exports.createCompany = async (req, res) => {
   try {
-    const company = await Company.create(req.body);
+
+     
+    const company = await Company.create({...req.body,slug: slugify(req.body.websiteName).toLowerCase()});
     res.status(201).json(company);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -54,7 +57,7 @@ exports.updateCompany = async (req, res) => {
   try {
 
     console.log(req.body);
-    const company = await Company.findByIdAndUpdate(req.params.id, req.body, {
+    const company = await Company.findByIdAndUpdate(req.params.id, {...req.body,slug: slugify(req.body.websiteName).toLowerCase()}, {
       new: true,
     });
 

@@ -41,6 +41,22 @@ exports.getCompanyById = async (req, res) => {
 };
 
 
+// Get a single company by ID
+exports.getCompanyByslug = async (req, res) => {
+  try {
+    const company = await Company.findOne({slug:req.params.slug})
+      .populate("category")
+      .populate("subcategories");
+
+    if (!company) return res.status(404).json({ error: "Company not found" });
+
+    res.json(company);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 
 exports.getCompanyBySubcategoryId = async (req, res) => {
   try {

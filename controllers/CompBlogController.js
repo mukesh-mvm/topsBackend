@@ -41,21 +41,23 @@ exports.filterBLog = async(req,res)=>{
     console.log(category._id)
 
 
-    const blogs = await CompBlog.find({categories:category._id})
+    const blogs = await CompBlog.find({categories:category?._id})
     .populate("subcategories")
+
+    console.log(blogs)
   
   
     const result = [];
 
     blogs.forEach(item => {
-      const subcatId = item.subcategories._id;
-      const existing = result.find(r => r.subcategories._id.toString() === subcatId.toString());
+      const subcatId = item?.subcategories?._id;
+      const existing = result?.find(r => r?.subcategories?._id?.toString() === subcatId?.toString());
     
       if (existing) {
         existing.items.push(item);
       } else {
         const data = {
-          subcategories: item.subcategories,
+          subcategories: item?.subcategories,
           items: [item]
         };
         result.push(data);
@@ -69,6 +71,7 @@ exports.filterBLog = async(req,res)=>{
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
+    console.log(error)
   }
 }
 

@@ -86,6 +86,29 @@ const getAllUser = async(req,res)=>{
    }
 }
 
+const updateStatus = async (req, res) => {
+  try {
+
+    let user = await User.findById(req.params.id)
+   
+
+    if (!user) return res.status(404).json({ error: "Blog not found" });
+
+    if(user.status ==='Inactive')  {
+      user.status ='Active'
+    }else{
+      user.status ='Inactive'
+    }
+
+   const users =  await  user.save()
+
+    res.json(users);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+
 
 
 const getAllAdmin = async (req, res) => {
@@ -138,4 +161,4 @@ const updateUserRole = async (req, res) => {
 
 
 
-module.exports = { registerUser, loginUser,getAllUser,getAllAdmin ,updateUserRole};
+module.exports = { registerUser, loginUser,getAllUser,getAllAdmin ,updateUserRole,updateStatus};

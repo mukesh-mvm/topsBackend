@@ -22,6 +22,8 @@ const subcategory = require("./routes/subcategoryRoutes");
 const tag = require("./routes/tag")
 const company = require("./routes/companyRoutes")
 const compBlog = require("./routes/compBlogRoutes")
+const topsShortsRoutes = require("./routes/topsShortsRoutes");
+
 
 
 
@@ -31,6 +33,8 @@ const allowedOrigins = new Set([
   "https://tops-admin-panel.vercel.app/",
   "https://tops-admin-panel.vercel.app",
   "http://localhost:3000",
+  "https://top5shots-2kuz.vercel.app/",
+  "https://top5shots-2kuz.vercel.app"
 ]);
 
 // CORS middleware setup
@@ -61,6 +65,7 @@ app.use(subcategory);
 app.use(tag)
 app.use(company)
 app.use(compBlog)
+app.use("/api/tops-shorts", topsShortsRoutes);
 
 
 
